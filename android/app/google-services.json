@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "999816907124",
+    "project_id": "lawquiz-554b3",
+    "storage_bucket": "lawquiz-554b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999816907124:android:3ddafbe7318c703b7ec421",
+        "android_client_info": {
+          "package_name": "com.example.law_quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999816907124-1t79b17i9ohqddpvqdjhq7lc2nuujh69.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZs__2_bemPsurl4n7vnnD4CR891AJWRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "999816907124-1t79b17i9ohqddpvqdjhq7lc2nuujh69.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "999816907124-46rmq9ivu32vun3j5gf7p020f6sgb0qe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lawQuiz"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
