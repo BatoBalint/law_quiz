@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:law_quiz/question.dart';
 
 class Quiz extends StatefulWidget {
-  const Quiz({super.key, required this.q, required this.nextQuiz});
+  const Quiz({
+    super.key,
+    required this.q,
+    required this.nextQuiz,
+    required this.changePoints,
+  });
 
   final Question q;
   final Function nextQuiz;
+  final Function changePoints;
 
   @override
   State<Quiz> createState() => _QuizState();
@@ -55,6 +61,7 @@ class _QuizState extends State<Quiz> {
 
   void ansSelect(int v) {
     if (guessed) return;
+    widget.changePoints(widget.q.check(v));
     fillBds();
     if (widget.q.check(v)) {
       setState(() {

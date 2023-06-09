@@ -20,7 +20,7 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
   String errorMessage = "";
 
   Future<void> loginRegister() async {
-    if ((_name.text.isEmpty && !isLogin) ||
+    if ((_name.text.trim().isEmpty && !isLogin) ||
         _password.text.isEmpty ||
         _email.text.isEmpty) {
       setState(() {
@@ -35,8 +35,10 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
 
     if (isLogin) {
       try {
-        await Auth()
-            .signInWitEamil(email: _email.text, password: _password.text);
+        await Auth().signInWitEamil(
+          email: _email.text.trim(),
+          password: _password.text.trim(),
+        );
       } on FirebaseAuthException catch (ex) {
         setState(() {
           errorMessage = ex.message ?? "";
@@ -45,9 +47,9 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
     } else {
       try {
         await Auth().createUser(
-          email: _email.text,
-          password: _password.text,
-          displayName: _name.text,
+          email: _email.text.trim(),
+          password: _password.text.trim(),
+          displayName: _name.text.trim(),
         );
       } on FirebaseAuthException catch (ex) {
         setState(() {
@@ -60,12 +62,11 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ListView(
         children: [
           const SizedBox(
-            height: 200,
+            height: 150,
           ),
           Text(
             isLogin ? "Bejelentkezés" : "Regisztráció",

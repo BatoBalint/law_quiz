@@ -7,6 +7,7 @@ import 'firebase_options.dart';
 import 'package:law_quiz/pages/login_register.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -22,10 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'Jog Quiz',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.purple,
+          seedColor: Colors.lightBlue,
           brightness: Brightness.dark,
         ),
       ),
+      debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
     );
   }

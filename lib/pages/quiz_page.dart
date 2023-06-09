@@ -2,12 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:law_quiz/highscore.dart';
 
 import 'package:law_quiz/question.dart';
 import 'package:law_quiz/quiz.dart';
+import 'package:law_quiz/storage.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  const QuizPage({super.key, required this.hs, required this.setHs});
+
+  final HighScore hs;
+
+  final Function setHs;
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -22,12 +28,15 @@ class _QuizPageState extends State<QuizPage> {
 
   int questionCount = 0;
   int rightAnswerCount = 0;
-  double percentage = 0;
 
   @override
   void initState() {
     createQuestion();
-    activeQuiz = Quiz(q: activeQuestion, nextQuiz: nextQuestion);
+    activeQuiz = Quiz(
+      q: activeQuestion,
+      nextQuiz: nextQuestion,
+      changePoints: changePoints,
+    );
     super.initState();
   }
 
@@ -45,7 +54,18 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       questions = qs;
       selectNextQuestion();
-      activeQuiz = Quiz(q: activeQuestion, nextQuiz: nextQuestion);
+      activeQuiz = Quiz(
+        q: activeQuestion,
+        nextQuiz: nextQuestion,
+        changePoints: changePoints,
+      );
+    });
+  }
+
+  void changePoints(bool rightAnswer) {
+    setState(() {
+      if (rightAnswer) rightAnswerCount++;
+      questionCount++;
     });
   }
 
@@ -55,10 +75,7 @@ class _QuizPageState extends State<QuizPage> {
     } else {
       wrongQuestions.add(activeQuestion);
     }
-    setState(() {
-      if (rightAnswer) rightAnswerCount++;
-      questionCount++;
-    });
+
     questions.remove(activeQuestion);
     selectNextQuestion();
   }
@@ -66,8 +83,26 @@ class _QuizPageState extends State<QuizPage> {
   void selectNextQuestion() {
     setState(() {
       activeQuestion = questions[Random().nextInt(questions.length)];
-      activeQuiz = Quiz(q: activeQuestion, nextQuiz: nextQuestion);
+      activeQuiz = Quiz(
+        q: activeQuestion,
+        nextQuiz: nextQuestion,
+        changePoints: changePoints,
+      );
     });
+  }
+
+  void closeQuiz() {
+    if (questionCount > 20 &&
+        rightAnswerCount * 100 / questionCount > widget.hs.percentage) {
+      HighScore newhs = HighScore(
+        score: rightAnswerCount,
+        outof: questionCount,
+        percentage: rightAnswerCount * 100 / questionCount,
+      );
+      Storage().writeToHighScore(map: newhs.toJSON());
+      widget.setHs(newhs);
+    }
+    Navigator.of(context).pop();
   }
 
   @override
@@ -79,11 +114,24 @@ class _QuizPageState extends State<QuizPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "$rightAnswerCount / $questionCount (${(questionCount == 0) ? "N/A" : "${(rightAnswerCount * 100 / questionCount).toStringAsFixed(2)}%"})",
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$rightAnswerCount / $questionCount (${(questionCount == 0) ? "N/A" : "${(rightAnswerCount * 100 / questionCount).toStringAsFixed(2)}%"})",
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () => closeQuiz(),
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        size: 40,
+                        color: Colors.red,
+                      ))
+                ],
               ),
             ),
             Padding(
