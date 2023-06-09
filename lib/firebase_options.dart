@@ -17,14 +17,14 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -52,11 +52,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDZs__2_bemPsurl4n7vnnD4CR891AJWRI',
-    appId: '1:999816907124:android:3ddafbe7318c703b7ec421',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCHvOC5ljzhFl1CgMsIZB49AUYfQpqDZww',
+    appId: '1:999816907124:web:2c8dcff566fa9e827ec421',
     messagingSenderId: '999816907124',
     projectId: 'lawquiz-554b3',
+    authDomain: 'lawquiz-554b3.firebaseapp.com',
     storageBucket: 'lawquiz-554b3.appspot.com',
+    measurementId: 'G-B0VQJR25WV',
   );
 }

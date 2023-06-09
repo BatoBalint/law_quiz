@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:law_quiz/quiz_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:law_quiz/auth.dart';
+import 'package:law_quiz/pages/home_page.dart';
 import 'firebase_options.dart';
+
+import 'package:law_quiz/pages/login_register.dart';
 
 Future<void> main() async {
   await Firebase.initializeApp(
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const QuizPage(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -38,9 +41,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
-        child: Text("Home Page"),
+    return Scaffold(
+      body: StreamBuilder(
+        stream: Auth().authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const HomePage();
+          } else {
+            return const LoginRegisterPage();
+          }
+        },
       ),
     );
   }
