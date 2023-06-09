@@ -38,6 +38,7 @@ dependencies:
   firebase_core: ^2.13.1
   firebase_auth: ^4.6.2
   cloud_firestore: ^4.8.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,10 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  image_path_android: "assets/icon/icon.png"
+  android: true
 
 # The following section is specific to Flutter packages.
 flutter:
