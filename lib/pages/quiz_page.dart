@@ -92,7 +92,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void closeQuiz() {
-    if (questionCount > 20 &&
+    if (questionCount >= 20 &&
         rightAnswerCount * 100 / questionCount > widget.hs.percentage) {
       HighScore newhs = HighScore(
         score: rightAnswerCount,

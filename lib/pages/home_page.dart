@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       hs = newHs;
     });
+    loadLeaderboardHighscores();
   }
 
   Future<void> cancelDPNameSub() async {
@@ -156,6 +157,16 @@ class _HomePageState extends State<HomePage> {
                 "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)})",
                 style: const TextStyle(
                   fontSize: 20,
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni.",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
                 ),
               ),
             ],
