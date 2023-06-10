@@ -42,15 +42,13 @@ class Storage {
         ),
       );
     }
-    returnList.sort(
-      (HighScore h1, HighScore h2) {
-        if (h1.percentage < h2.percentage) {
-          return 1;
-        } else {
-          return -1;
-        }
-      },
-    );
+    returnList.sort((HighScore h1, HighScore h2) {
+      if (h1.percentage < h2.percentage) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
     return returnList;
   }
 }

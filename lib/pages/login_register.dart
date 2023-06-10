@@ -61,126 +61,141 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ListView(
-        children: [
-          const SizedBox(
-            height: 150,
-          ),
-          Text(
-            isLogin ? "Bejelentkezés" : "Regisztráció",
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          !isLogin
-              ? TextField(
-                  controller: _name,
-                  decoration: const InputDecoration(
-                    hintText: "Becenév",
-                    border: OutlineInputBorder(),
-                  ),
-                )
-              : Container(),
-          SizedBox(
-            height: !isLogin ? 10 : 0,
-          ),
-          TextField(
-            controller: _email,
-            decoration: const InputDecoration(
-              hintText: "Email",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextField(
-            controller: _password,
-            decoration: const InputDecoration(
-              hintText: "Jelszó",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(
-            height: 6,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "Inkább ",
-                    ),
-                    TextSpan(
-                      text: isLogin ? "regisztálok" : "bejelentkezem",
-                      style: const TextStyle(
-                        color: Colors.blue,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          setState(() {
-                            isLogin = !isLogin;
-                          });
-                        },
-                    ),
-                    const TextSpan(text: "."),
-                  ],
-                  style: const TextStyle(
-                    color: Colors.white70,
-                  ),
-                ),
+      children: [
+        const SizedBox(height: 150),
+        title(),
+        const SizedBox(height: 20),
+        if (!isLogin) displayNameInput(),
+        if (!isLogin) const SizedBox(height: 10),
+        emailInput(),
+        const SizedBox(height: 10),
+        passwordInput(),
+        const SizedBox(height: 10),
+        loginRegSwitcher(),
+        const SizedBox(height: 10),
+        loginRegButton(),
+        const SizedBox(height: 20),
+        emailNotRequiredMessage(),
+        const SizedBox(height: 10),
+        errorMessageText(),
+      ],
+    );
+  }
+
+  Widget title() {
+    return Text(
+      isLogin ? "Bejelentkezés" : "Regisztráció",
+      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget displayNameInput() {
+    return TextField(
+      controller: _name,
+      decoration: const InputDecoration(
+        hintText: "Becenév",
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget emailInput() {
+    return TextField(
+      controller: _email,
+      decoration: const InputDecoration(
+        hintText: "Email",
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget passwordInput() {
+    return TextField(
+      controller: _password,
+      decoration: const InputDecoration(
+        hintText: "Jelszó",
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget loginRegSwitcher() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 4),
+        child: RichText(
+          textAlign: TextAlign.start,
+          text: TextSpan(
+            children: [
+              const TextSpan(
+                text: "Inkább ",
               ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: loginRegister,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isLogin ? Colors.lightBlue : Colors.green,
-                padding: const EdgeInsets.all(20),
-                foregroundColor: Colors.white,
-              ),
-              child: Text(
-                isLogin ? "Bejelentkezés" : "Regisztrálás",
+              TextSpan(
+                text: isLogin ? "regisztálok" : "bejelentkezem",
                 style: const TextStyle(
-                  letterSpacing: 1,
+                  color: Colors.blue,
                 ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    setState(() {
+                      isLogin = !isLogin;
+                    });
+                  },
               ),
+              const TextSpan(text: "."),
+            ],
+            style: const TextStyle(
+              color: Colors.white70,
             ),
           ),
-          const SizedBox(
-            height: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget loginRegButton() {
+    return Container(
+      alignment: Alignment.centerRight,
+      child: ElevatedButton(
+        onPressed: loginRegister,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isLogin ? Colors.lightBlue : Colors.green,
+          padding: const EdgeInsets.all(20),
+          foregroundColor: Colors.white,
+        ),
+        child: Text(
+          isLogin ? "Bejelentkezés" : "Regisztrálás",
+          style: const TextStyle(
+            letterSpacing: 1,
           ),
-          !isLogin
-              ? const Text(
-                  "Az emailnek nem kell léteznie, csak a pontok miatt kell megkülönböztetésnek.",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    letterSpacing: 1,
-                  ),
-                )
-              : Container(),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              errorMessage,
-              style: const TextStyle(
-                color: Colors.red,
-              ),
+        ),
+      ),
+    );
+  }
+
+  Widget emailNotRequiredMessage() {
+    return !isLogin
+        ? const Text(
+            "Az emailnek nem kell léteznie, csak a pontok miatt kell megkülönböztetésnek.",
+            style: TextStyle(
+              color: Colors.grey,
+              letterSpacing: 1,
             ),
-          ),
-        ],
+          )
+        : Container();
+  }
+
+  Widget errorMessageText() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        errorMessage,
+        style: const TextStyle(
+          color: Colors.red,
+        ),
       ),
     );
   }

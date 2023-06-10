@@ -69,109 +69,112 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Hello $displayName",
-                    style: const TextStyle(
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
+              title(),
+              menuButton(
+                title: "Start",
+                buttonFontColor: Colors.lightBlue,
+                call: openQuizPage,
               ),
-              TextButton(
-                style: const ButtonStyle(
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: MaterialStatePropertyAll(Colors.white10)),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return QuizPage(hs: hs, setHs: setHs);
-                  }));
-                },
-                child: const SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "Start",
-                      style: TextStyle(fontSize: 40),
-                    ),
-                  ),
-                ),
+              const SizedBox(height: 20),
+              menuButton(
+                title: "Ranglista",
+                buttonFontColor: Colors.yellow,
+                call: openLeaderboard,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextButton(
-                style: const ButtonStyle(
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: MaterialStatePropertyAll(Colors.white10)),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LeaderboardPage(
-                          highscores: highscores,
-                        );
-                      },
-                    ),
-                  );
-                },
-                child: const SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "Ranglista",
-                      style: TextStyle(fontSize: 40, color: Colors.yellow),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextButton(
-                style: const ButtonStyle(
-                    alignment: Alignment.centerLeft,
-                    backgroundColor: MaterialStatePropertyAll(Colors.white10)),
-                onPressed: () => Auth().signOut(),
-                child: const SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "Kijelentkezés",
-                      style: TextStyle(fontSize: 40, color: Colors.redAccent),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)})",
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni.",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
+              const SizedBox(height: 20),
+              menuButton(
+                  title: "Kijelentkezés",
+                  buttonFontColor: Colors.redAccent,
+                  call: Auth().signOut),
+              const SizedBox(height: 20),
+              personalHighscore(),
+              const SizedBox(height: 20),
+              leaderBoardInfo(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget title() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          "Hello $displayName",
+          style: const TextStyle(
+            fontSize: 30,
+          ),
+        ),
+      ),
+    );
+  }
+
+  openQuizPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return QuizPage(hs: hs, setHs: setHs);
+        },
+      ),
+    );
+  }
+
+  openLeaderboard() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return LeaderboardPage(
+            highscores: highscores,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget menuButton({
+    required String title,
+    required Color buttonFontColor,
+    required Function call,
+  }) {
+    return TextButton(
+      style: const ButtonStyle(
+        alignment: Alignment.centerLeft,
+        backgroundColor: MaterialStatePropertyAll(Colors.white10),
+      ),
+      onPressed: () {
+        call();
+      },
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            title,
+            style: TextStyle(fontSize: 40, color: buttonFontColor),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget personalHighscore() {
+    return Text(
+      "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)})",
+      style: const TextStyle(
+        fontSize: 20,
+      ),
+    );
+  }
+
+  Widget leaderBoardInfo() {
+    return const Text(
+      "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni.",
+      style: TextStyle(
+        fontSize: 20,
+        color: Colors.grey,
       ),
     );
   }
