@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:law_quiz/highscore.dart';
+import 'package:law_quiz/classes/highscore.dart';
 
-import 'package:law_quiz/question.dart';
+import 'package:law_quiz/classes/question.dart';
 import 'package:law_quiz/quiz.dart';
-import 'package:law_quiz/storage.dart';
+import 'package:law_quiz/classes/storage.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key, required this.hs, required this.setHs});

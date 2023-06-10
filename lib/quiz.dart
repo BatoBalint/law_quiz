@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:law_quiz/question.dart';
+import 'package:law_quiz/classes/question.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({

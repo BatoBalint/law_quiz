@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:law_quiz/auth.dart';
-import 'package:law_quiz/highscore.dart';
+import 'package:law_quiz/classes/auth.dart';
+import 'package:law_quiz/classes/highscore.dart';
 
 class Storage {
   FirebaseFirestore get getInstance => FirebaseFirestore.instance;

@@ -1,4 +1,4 @@
-import 'package:law_quiz/auth.dart';
+import 'package:law_quiz/classes/auth.dart';
 
 class HighScore {
   int score;

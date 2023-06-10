@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:law_quiz/highscore.dart';
+import 'package:law_quiz/classes/highscore.dart';
 
 class LeaderboardPage extends StatelessWidget {
   const LeaderboardPage({super.key, required this.highscores});

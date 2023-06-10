@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:law_quiz/auth.dart';
-import 'package:law_quiz/highscore.dart';
+import 'package:law_quiz/classes/auth.dart';
+import 'package:law_quiz/classes/highscore.dart';
 import 'package:law_quiz/pages/leaderboard_page.dart';
 import 'package:law_quiz/pages/quiz_page.dart';
-import 'package:law_quiz/storage.dart';
+import 'package:law_quiz/classes/storage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

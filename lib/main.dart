@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:law_quiz/auth.dart';
+import 'package:law_quiz/classes/auth.dart';
 import 'package:law_quiz/pages/home_page.dart';
-import 'firebase_options.dart';
+import 'classes/firebase_options.dart';
 
 import 'package:law_quiz/pages/login_register.dart';
 
