@@ -8,24 +8,25 @@ import 'package:law_quiz/pages/quiz_page.dart';
 import 'package:law_quiz/classes/storage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.logOutAsGuest});
+  final Function logOutAsGuest;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  String displayName = "";
+  String displayName = "Vendég";
   StreamSubscription? dpName;
   HighScore hs = HighScore(score: 0, outof: 0, percentage: 0);
   List<HighScore> highscores = [];
 
   @override
   void initState() {
-    displayName = Auth().getCurrentUser?.displayName ?? "";
+    displayName = Auth().getCurrentUser?.displayName ?? "Vendég";
     dpName = Auth().getUserChanges.listen((event) {
       setState(() {
-        displayName = Auth().getCurrentUser?.displayName ?? "No displayname";
+        displayName = Auth().getCurrentUser?.displayName ?? "Vendég";
       });
     });
     if (Auth().getCurrentUser != null &&
@@ -41,6 +42,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadHighscore() async {
+    if (!Auth.onlineLogin) return;
+
     hs = await Storage().getUsersHighscore();
     setHs(hs);
   }
@@ -58,6 +61,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> cancelDPNameSub() async {
     await dpName?.cancel();
+  }
+
+  @override
+  void dispose() {
+    cancelDPNameSub();
+    super.dispose();
   }
 
   @override
@@ -83,9 +92,13 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 20),
               menuButton(
-                  title: "Kijelentkezés",
-                  buttonFontColor: Colors.redAccent,
-                  call: Auth().signOut),
+                title: "Kijelentkezés",
+                buttonFontColor: Colors.redAccent,
+                call: () {
+                  if (!Auth.onlineLogin) widget.logOutAsGuest();
+                  Auth().signOut();
+                },
+              ),
               const SizedBox(height: 20),
               personalHighscore(),
               const SizedBox(height: 20),
@@ -162,7 +175,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget personalHighscore() {
     return Text(
-      "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)})",
+      "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)}%)",
       style: const TextStyle(
         fontSize: 20,
       ),
@@ -170,9 +183,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget leaderBoardInfo() {
-    return const Text(
-      "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni.",
-      style: TextStyle(
+    return Text(
+      Auth.onlineLogin
+          ? "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni."
+          : "Vendégként nem lesz elmentve a pontszámod valamint a ranglistára sem kerülsz fel.",
+      style: const TextStyle(
         fontSize: 20,
         color: Colors.grey,
       ),

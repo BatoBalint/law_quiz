@@ -46,16 +46,36 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: Auth().authStateChanges,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomePage();
-          } else {
-            return const LoginRegisterPage();
-          }
-        },
-      ),
+      body: !Auth.onlineLogin
+          ? HomePage(
+              logOutAsGuest: logoutAsGuest,
+            )
+          : StreamBuilder(
+              stream: Auth().authStateChanges,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return HomePage(
+                    logOutAsGuest: loginAsGuest,
+                  );
+                } else {
+                  return LoginRegisterPage(
+                    loginAsGuest: loginAsGuest,
+                  );
+                }
+              },
+            ),
     );
+  }
+
+  logoutAsGuest() {
+    setState(() {
+      Auth.onlineLogin = true;
+    });
+  }
+
+  loginAsGuest() {
+    setState(() {
+      Auth.onlineLogin = false;
+    });
   }
 }

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:law_quiz/classes/auth.dart';
 
 class LoginRegisterPage extends StatefulWidget {
-  const LoginRegisterPage({super.key});
-
+  const LoginRegisterPage({super.key, required this.loginAsGuest});
+  final Function loginAsGuest;
   @override
   State<LoginRegisterPage> createState() => _LoginRegisterPageState();
 }
@@ -74,8 +74,8 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
         passwordInput(),
         const SizedBox(height: 10),
         loginRegSwitcher(),
-        const SizedBox(height: 10),
-        loginRegButton(),
+        const SizedBox(height: 20),
+        loginRegButtons(),
         const SizedBox(height: 20),
         emailNotRequiredMessage(),
         const SizedBox(height: 10),
@@ -156,23 +156,49 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
     );
   }
 
-  Widget loginRegButton() {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: ElevatedButton(
-        onPressed: loginRegister,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isLogin ? Colors.lightBlue : Colors.green,
-          padding: const EdgeInsets.all(20),
-          foregroundColor: Colors.white,
-        ),
-        child: Text(
-          isLogin ? "Bejelentkezés" : "Regisztrálás",
-          style: const TextStyle(
-            letterSpacing: 1,
+  Widget loginRegButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: () => widget.loginAsGuest(),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey,
+            padding: const EdgeInsets.all(20),
+            foregroundColor: Colors.white,
+          ),
+          child: const Text(
+            "Vendég felhasználó",
           ),
         ),
-      ),
+        ElevatedButton(
+          onPressed: () {
+            if (isLogin) {
+              Auth().signInWitEamil(
+                email: _email.text,
+                password: _password.text,
+              );
+            } else {
+              Auth().createUser(
+                email: _email.text,
+                password: _password.text,
+                displayName: _name.text,
+              );
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isLogin ? Colors.lightBlue : Colors.green,
+            padding: const EdgeInsets.all(20),
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            isLogin ? "Bejelentkezés" : "Regisztrálás",
+            style: const TextStyle(
+              letterSpacing: 1,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
