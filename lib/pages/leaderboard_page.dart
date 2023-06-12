@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:law_quiz/classes/highscore.dart';
+import 'package:law_quiz/classes/storage.dart';
 
 class LeaderboardPage extends StatelessWidget {
-  const LeaderboardPage({super.key, required this.highscores});
+  const LeaderboardPage({super.key});
 
-  final List<HighScore> highscores;
   final TextStyle textStyle = const TextStyle(
     fontSize: 20,
   );
 
-  Widget createTable() {
+  Widget createTable(List<HighScore>? highscores) {
     List<TableRow> rows = [];
     rows.add(
       TableRow(
@@ -22,20 +22,22 @@ class LeaderboardPage extends StatelessWidget {
         ],
       ),
     );
-    for (int i = 0; i < highscores.length; ++i) {
-      HighScore hs = highscores[i];
-      rows.add(
-        TableRow(
-          children: [
-            createTableItem(text: "${i + 1}."),
-            createTableItem(text: hs.displayname),
-            createTableItem(text: "${hs.score}/", alignRight: true),
-            createTableItem(text: "${hs.outof}"),
-            createTableItem(
-                text: hs.percentage.toStringAsFixed(2), alignRight: true),
-          ],
-        ),
-      );
+    if (highscores != null) {
+      for (int i = 0; i < highscores.length; ++i) {
+        HighScore hs = highscores[i];
+        rows.add(
+          TableRow(
+            children: [
+              createTableItem(text: "${i + 1}."),
+              createTableItem(text: hs.displayname),
+              createTableItem(text: "${hs.score}/", alignRight: true),
+              createTableItem(text: "${hs.outof}"),
+              createTableItem(
+                  text: hs.percentage.toStringAsFixed(2), alignRight: true),
+            ],
+          ),
+        );
+      }
     }
     return Table(
       children: rows,
@@ -73,7 +75,12 @@ class LeaderboardPage extends StatelessWidget {
               children: [
                 topBar(context),
                 title(),
-                createTable(),
+                FutureBuilder(
+                  future: Storage().getAllHighscore(),
+                  builder: (context, snapshot) {
+                    return createTable(snapshot.data);
+                  },
+                ),
               ],
             ),
           ),
