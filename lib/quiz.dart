@@ -59,11 +59,11 @@ class _QuizState extends State<Quiz> {
     rightAns = false;
   }
 
-  void ansSelect(String answer, int index) {
+  void ansSelect(int index) {
     if (guessed) return;
-    widget.changePoints(widget.q.check(answer));
+    widget.changePoints(widget.q.check(index));
     fillBds();
-    if (widget.q.check(answer)) {
+    if (widget.q.check(index)) {
       setState(() {
         bds[index] = BoxDecoration(
           color: Colors.green,
@@ -120,7 +120,7 @@ class _QuizState extends State<Quiz> {
                 decoration: bds[index],
                 child: TextButton(
                   onPressed: () {
-                    ansSelect(widget.q.answers[index], index);
+                    ansSelect(index);
                   },
                   style: const ButtonStyle(
                     splashFactory: InkSplash.splashFactory,
@@ -130,7 +130,7 @@ class _QuizState extends State<Quiz> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                     child: Text(
-                      widget.q.answers[index],
+                      widget.q.answers[index].text,
                       style: answerTs,
                     ),
                   ),

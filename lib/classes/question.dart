@@ -1,10 +1,11 @@
 import 'dart:math';
 
+import 'package:law_quiz/classes/answer.dart';
+
 class Question {
   String question = "";
-  int rightIndex = 0;
   String right;
-  List<String> answers = [];
+  List<Answer> answers = [];
   int index;
 
   Question(String qna, {required this.right, this.index = -1}) {
@@ -15,26 +16,26 @@ class Question {
     List<String> data = qna.trim().split(";");
     question = data[0];
 
-    Random r = Random();
-    List availableIndexes =
-        List.generate(data.length - 1, (index) => index + 1);
-    int c = 0;
-    while (availableIndexes.isNotEmpty) {
-      int rnd = r.nextInt(availableIndexes.length);
-      if (right.codeUnitAt(0) - 96 == availableIndexes[rnd]) {
-        rightIndex = c;
-      }
-      answers.add(data[availableIndexes[rnd]].trim());
-      availableIndexes.removeAt(rnd);
-      c++;
+    for (var i = 1; i < data.length; i++) {
+      answers.add(Answer(text: data[i], right: i == right.codeUnitAt(0) - 96));
     }
+
+    answers.sort((a, b) => 1 - Random().nextInt(3));
   }
 
-  bool check(String v) {
-    return v == answers[rightIndex];
+  bool check(int v) {
+    int c = 0;
+    while (!answers[c].right) {
+      c++;
+    }
+    return c == v;
   }
 
   int getRightIndex() {
-    return rightIndex;
+    int c = 0;
+    while (!answers[c].right) {
+      c++;
+    }
+    return c;
   }
 }
