@@ -49,7 +49,7 @@ class _QuizPageState extends State<QuizPage> {
 
     List<Question> qs = [];
     for (int i = 0; i < questionLines.length; i++) {
-      qs.add(Question(questionLines[i], right: answers[i]));
+      qs.add(Question(questionLines[i], right: answers[i], index: i));
     }
     setState(() {
       questions = qs;
@@ -124,13 +124,14 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                   ),
                   IconButton(
-                      onPressed: () => closeQuiz(),
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(
-                        Icons.close_rounded,
-                        size: 40,
-                        color: Colors.red,
-                      ))
+                    onPressed: () => closeQuiz(),
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      size: 40,
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               ),
             ),
