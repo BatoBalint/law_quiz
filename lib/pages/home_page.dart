@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   String displayName = "Vendég";
   StreamSubscription? dpName;
   HighScore hs = HighScore(score: 0, outof: 0, percentage: 0);
-  List<HighScore> highscores = [];
 
   @override
   void initState() {
@@ -36,8 +35,6 @@ class _HomePageState extends State<HomePage> {
 
     loadHighscore();
 
-    loadLeaderboardHighscores();
-
     super.initState();
   }
 
@@ -48,15 +45,10 @@ class _HomePageState extends State<HomePage> {
     setHs(hs);
   }
 
-  Future<void> loadLeaderboardHighscores() async {
-    highscores = await Storage().getAllHighscore();
-  }
-
   void setHs(HighScore newHs) {
     setState(() {
       hs = newHs;
     });
-    loadLeaderboardHighscores();
   }
 
   Future<void> cancelDPNameSub() async {
@@ -82,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               menuButton(
                 title: "Start",
                 buttonFontColor: Colors.lightBlue,
-                call: openQuizPage,
+                call: startButtonClick,
               ),
               const SizedBox(height: 20),
               menuButton(
@@ -191,4 +183,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  startButtonClick() {}
 }
