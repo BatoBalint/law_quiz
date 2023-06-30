@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -51,6 +53,18 @@ class _QuizPageState extends State<QuizPage> {
     for (int i = 0; i < questionLines.length; i++) {
       qs.add(Question(questionLines[i], right: answers[i], index: i));
     }
+
+    qs = qs.where(
+      (Question q) {
+        return q.question == "Melyik állítás igaz?" ||
+            q.question == "Melyik állítás hamis?";
+      },
+    ).toList();
+
+    List<String> lines = [];
+
+    writeToFile(lines);
+
     setState(() {
       questions = qs;
       selectNextQuestion();
@@ -146,5 +160,26 @@ class _QuizPageState extends State<QuizPage> {
         ),
       ),
     );
+  }
+
+  Future<void> writeToFile(List<String> lines) async {
+    List<Directory>? dirs = await getExternalStorageDirectories();
+    dirs ??= [];
+    if (dirs.isNotEmpty) {
+      var dir = dirs[0];
+      var file = File("${dir.path}/output.txt");
+
+      if (!file.existsSync()) {
+        await file.create();
+      }
+
+      var sink = file.openWrite();
+
+      for (String line in lines) {
+        sink.write("$line\n");
+      }
+
+      sink.close();
+    }
   }
 }

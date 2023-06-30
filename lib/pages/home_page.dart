@@ -74,7 +74,9 @@ class _HomePageState extends State<HomePage> {
               menuButton(
                 title: "Start",
                 buttonFontColor: Colors.lightBlue,
-                call: startButtonClick,
+                call: () {
+                  openQuizPage();
+                },
               ),
               const SizedBox(height: 20),
               menuButton(
@@ -183,6 +185,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  startButtonClick() {}
 }
