@@ -17,7 +17,7 @@ class Quiz extends StatefulWidget {
   final Function nextQuiz;
   final Function changePoints;
   final Function closeQuiz;
-  final last;
+  final bool last;
 
   @override
   State<Quiz> createState() => _QuizState();

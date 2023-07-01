@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 import 'package:law_quiz/classes/answer.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -372,42 +370,42 @@ class _QuizPageState extends State<QuizPage> {
     return s.toString();
   }
 
-  Future<void> writeToFile(List<String> lines) async {
-    List<Directory>? dirs = await getExternalStorageDirectories();
-    dirs ??= [];
-    if (dirs.isNotEmpty) {
-      var dir = dirs[0];
-      var file = File("${dir.path}/output.txt");
+  // Future<void> writeToFile(List<String> lines) async {
+  //   List<Directory>? dirs = await getExternalStorageDirectories();
+  //   dirs ??= [];
+  //   if (dirs.isNotEmpty) {
+  //     var dir = dirs[0];
+  //     var file = File("${dir.path}/output.txt");
 
-      if (!file.existsSync()) {
-        await file.create();
-      }
+  //     if (!file.existsSync()) {
+  //       await file.create();
+  //     }
 
-      var sink = file.openWrite();
+  //     var sink = file.openWrite();
 
-      for (String line in lines) {
-        sink.write("$line\n");
-      }
+  //     for (String line in lines) {
+  //       sink.write("$line\n");
+  //     }
 
-      sink.close();
-    }
-  }
+  //     sink.close();
+  //   }
+  // }
 
-  void addToLines(
-    List<String> lines,
-    List<Answer> trueAnswers,
-    List<Answer> falseAnswers,
-  ) {
-    int c = 1;
-    lines.add("Igazak:");
-    for (Answer a in trueAnswers) {
-      lines.add("${"$c".padLeft(3)}:\t${a.text}");
-      c++;
-    }
-    lines.add("Hamisak:");
-    for (Answer a in falseAnswers) {
-      lines.add("${"$c".padLeft(3)}:\t${a.text}");
-      c++;
-    }
-  }
+  // void addToLines(
+  //   List<String> lines,
+  //   List<Answer> trueAnswers,
+  //   List<Answer> falseAnswers,
+  // ) {
+  //   int c = 1;
+  //   lines.add("Igazak:");
+  //   for (Answer a in trueAnswers) {
+  //     lines.add("${"$c".padLeft(3)}:\t${a.text}");
+  //     c++;
+  //   }
+  //   lines.add("Hamisak:");
+  //   for (Answer a in falseAnswers) {
+  //     lines.add("${"$c".padLeft(3)}:\t${a.text}");
+  //     c++;
+  //   }
+  // }
 }
