@@ -18,7 +18,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String displayName = "Vendég";
   StreamSubscription? dpName;
-  HighScore hs = HighScore(score: 0, outof: 0, percentage: 0);
+  HighScore hs = HighScore(
+    score: 0,
+    outof: 0,
+    time: const Duration(milliseconds: 0),
+  );
 
   @override
   void initState() {
@@ -167,7 +171,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget personalHighscore() {
     return Text(
-      "Legjobb elért pontszám:\n${hs.score} / ${hs.outof} (${hs.percentage.toStringAsFixed(2)}%)",
+      "Legjobb elért pontszám:\n${hs.score} / 30 (${hs.time.inMilliseconds == 0 ? "N/A" : hs.timeAsString()})",
       style: const TextStyle(
         fontSize: 20,
       ),
@@ -177,7 +181,7 @@ class _HomePageState extends State<HomePage> {
   Widget leaderBoardInfo() {
     return Text(
       Auth.onlineLogin
-          ? "A ranglistára kerüléshez legalább 20 kérdésre kell válaszolni."
+          ? ""
           : "Vendégként nem lesz elmentve a pontszámod valamint a ranglistára sem kerülsz fel.",
       style: const TextStyle(
         fontSize: 20,

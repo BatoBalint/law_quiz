@@ -16,9 +16,8 @@ class LeaderboardPage extends StatelessWidget {
         children: [
           createTableItem(text: "#"),
           createTableItem(text: "Név"),
-          createTableItem(text: "pont/", alignRight: true),
-          createTableItem(text: "max"),
-          createTableItem(text: "%", alignRight: true),
+          createTableItem(text: "Pont", alignRight: true),
+          createTableItem(text: "Idő", alignRight: true),
         ],
       ),
     );
@@ -30,10 +29,8 @@ class LeaderboardPage extends StatelessWidget {
             children: [
               createTableItem(text: "${i + 1}."),
               createTableItem(text: hs.displayname),
-              createTableItem(text: "${hs.score}/", alignRight: true),
-              createTableItem(text: "${hs.outof}"),
-              createTableItem(
-                  text: hs.percentage.toStringAsFixed(2), alignRight: true),
+              createTableItem(text: hs.score.toString(), alignRight: true),
+              createTableItem(text: hs.timeAsString(), alignRight: true),
             ],
           ),
         );
@@ -42,10 +39,9 @@ class LeaderboardPage extends StatelessWidget {
     return Table(
       children: rows,
       columnWidths: const {
-        0: FractionColumnWidth(.12),
-        2: FractionColumnWidth(.14),
-        3: FractionColumnWidth(.12),
-        4: FractionColumnWidth(.22)
+        0: FractionColumnWidth(.10),
+        1: FractionColumnWidth(.40),
+        2: FractionColumnWidth(.15)
       },
     );
   }

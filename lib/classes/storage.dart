@@ -4,8 +4,20 @@ import 'package:law_quiz/classes/highscore.dart';
 
 class Storage {
   FirebaseFirestore get getInstance => FirebaseFirestore.instance;
+  String currentDocName = "highscoresv2";
 
   Future<void> writeToHighScore({
+    required Map<String, dynamic> map,
+  }) async {
+    if (Auth().getCurrentUser?.email == null) return;
+    final docRef = getInstance
+        .collection(currentDocName)
+        .doc(Auth().getCurrentUser!.email);
+
+    await docRef.set(map);
+  }
+
+  Future<void> oldWriteHighscore({
     required Map<String, dynamic> map,
   }) async {
     if (Auth().getCurrentUser?.email == null) return;
@@ -18,36 +30,37 @@ class Storage {
   Future<HighScore> getUsersHighscore() async {
     if (Auth().getCurrentUser?.email != null) {
       var document = getInstance
-          .collection("highscores")
+          .collection(currentDocName)
           .doc(Auth().getCurrentUser!.email);
       DocumentSnapshot<Map<String, dynamic>> map = await document.get();
       if (map.exists) {
         return HighScore.fromJSON(map.data()!);
       }
     }
-    return HighScore(score: 0, outof: 0, percentage: 0);
+    return HighScore(score: 0, outof: 0, time: Duration.zero);
   }
 
   Future<List<HighScore>> getAllHighscore() async {
     QuerySnapshot<Map<String, dynamic>> snapshots =
-        await getInstance.collection("highscores").get();
+        await getInstance.collection(currentDocName).get();
     List<HighScore> returnList = [];
     for (var doc in snapshots.docs) {
       returnList.add(
         HighScore(
           score: doc.data()["score"] ?? 0,
           outof: doc.data()["outof"] ?? 0,
-          percentage: doc.data()["percentage"] * 1.0 ?? 0.0,
+          time: Duration(milliseconds: doc.data()["time"] ?? 0),
           displayname: doc.data()["displayname"] ?? "Unknown",
         ),
       );
     }
+
     returnList.sort((HighScore h1, HighScore h2) {
-      if (h1.percentage < h2.percentage) {
-        return 1;
-      } else {
-        return -1;
+      int comp = h1.score.compareTo(h2.score);
+      if (comp == 0) {
+        return h1.time.compareTo(h2.time);
       }
+      return -comp;
     });
     return returnList;
   }

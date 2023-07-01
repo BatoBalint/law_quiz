@@ -20,7 +20,8 @@ class Question {
       answers.add(Answer(text: data[i], right: i == right.codeUnitAt(0) - 96));
     }
 
-    answers.sort((a, b) => 1 - Random().nextInt(3));
+    Random r = Random();
+    answers.sort((a, b) => 1 - r.nextInt(3));
   }
 
   bool check(int v) {
@@ -29,6 +30,10 @@ class Question {
       c++;
     }
     return c == v;
+  }
+
+  Answer getRightAnswer() {
+    return answers[getRightIndex()];
   }
 
   int getRightIndex() {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:law_quiz/classes/question.dart';
 
@@ -7,11 +9,15 @@ class Quiz extends StatefulWidget {
     required this.q,
     required this.nextQuiz,
     required this.changePoints,
+    required this.closeQuiz,
+    this.last = false,
   });
 
   final Question q;
   final Function nextQuiz;
   final Function changePoints;
+  final Function closeQuiz;
+  final last;
 
   @override
   State<Quiz> createState() => _QuizState();
@@ -37,6 +43,8 @@ class _QuizState extends State<Quiz> {
 
   bool guessed = false;
   bool rightAns = false;
+  late Timer buttonEnableTimer;
+  bool closeButtonEnabled = false;
 
   void fillBds() {
     bds.clear();
@@ -57,6 +65,10 @@ class _QuizState extends State<Quiz> {
     fillBds();
     guessed = false;
     rightAns = false;
+    if (widget.last) {
+      buttonEnableTimer =
+          Timer(const Duration(seconds: 3), () => enableCloseButton());
+    }
   }
 
   void ansSelect(int index) {
@@ -87,6 +99,13 @@ class _QuizState extends State<Quiz> {
   }
 
   void nextQuiz() {}
+
+  void enableCloseButton() {
+    buttonEnableTimer.cancel();
+    setState(() {
+      closeButtonEnabled = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +158,16 @@ class _QuizState extends State<Quiz> {
             );
           },
         ),
-        Container(
-          alignment: Alignment.bottomRight,
-          child: guessed
+        nextButton(),
+      ],
+    );
+  }
+
+  Widget nextButton() {
+    return Container(
+      alignment: Alignment.bottomRight,
+      child: guessed
+          ? (!widget.last
               ? IconButton(
                   onPressed: () {
                     widget.nextQuiz(rightAns);
@@ -152,9 +178,20 @@ class _QuizState extends State<Quiz> {
                   splashRadius: 40,
                   splashColor: Colors.white10,
                 )
-              : Container(),
-        ),
-      ],
+              : IconButton(
+                  onPressed: closeButtonEnabled
+                      ? () {
+                          widget.closeQuiz();
+                        }
+                      : null,
+                  disabledColor: const Color.fromARGB(255, 78, 42, 42),
+                  icon: const Icon(Icons.close_rounded),
+                  iconSize: 60,
+                  color: Colors.red,
+                  splashRadius: 40,
+                  splashColor: Colors.white10,
+                ))
+          : Container(),
     );
   }
 }
