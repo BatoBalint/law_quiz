@@ -21,7 +21,9 @@ class Question {
     }
 
     Random r = Random();
-    answers.sort((a, b) => 1 - r.nextInt(3));
+    for (int i = 0; i < 5; ++i) {
+      answers.sort((a, b) => 1 - r.nextInt(3));
+    }
   }
 
   bool check(int v) {

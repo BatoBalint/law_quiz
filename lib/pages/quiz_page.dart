@@ -208,7 +208,7 @@ class _QuizPageState extends State<QuizPage> {
       trueAnswers.remove(temp);
       result.add(
         Question(
-            "Mellyik állítás igaz?;${temp.text};${tempList[0].text};${tempList[1].text};${tempList[2].text}",
+            "Melyik állítás igaz?;${temp.text};${tempList[0].text};${tempList[1].text};${tempList[2].text}",
             right: "a"),
       );
       tempList.clear();
@@ -224,7 +224,7 @@ class _QuizPageState extends State<QuizPage> {
       falseAnswers.remove(temp);
       result.add(
         Question(
-            "Mellyik állítás hamis?;${temp.text};${tempList[0].text};${tempList[1].text};${tempList[2].text}",
+            "Melyik állítás hamis?;${temp.text};${tempList[0].text};${tempList[1].text};${tempList[2].text}",
             right: "a"),
       );
       tempList.clear();
